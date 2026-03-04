@@ -33,12 +33,21 @@ It wrote the code, ran away, and now the game is unplayable.
   - New Game button didn't reset score, status, or history, and generated numbers from 1-100 ignoring difficulty
   - Attempt counter started at 1 instead of 0
   - Hints were backwards ("Go HIGHER" when guess was too high)
+  - TypeError crash on even attempts due to secret being converted to a string
+  - Score off-by-one: winning formula used `attempt_number + 1` giving 10 fewer points
+  - "Too High" scoring was inconsistent (+5 on even attempts, -5 on odd)
+  - Switching difficulty didn't regenerate the secret number within the new range
 - [x] Explain what fixes you applied.
   - Changed Hard range to 1-200
   - Used f-string with `{low}` and `{high}` for dynamic range display
   - New Game now resets all session state fields and uses `random.randint(low, high)`
   - Changed initial attempts to 0
   - Swapped hint messages so "Too High" says "Go LOWER" and vice versa
+  - Removed buggy int-to-string conversion that caused TypeError on even attempts
+  - Fixed score formula from `attempt_number + 1` to `attempt_number`
+  - Made "Too High" scoring consistent (-5 always, matching "Too Low")
+  - Added difficulty tracking so secret regenerates when switching levels
+  - Changed Easy attempts from 6 to 10 for better gameplay balance
   - Refactored all game logic from app.py into logic_utils.py
 
 ## 📸 Demo

@@ -9,6 +9,10 @@ It seems like a cool web version of the guessing number game. However, right awa
 - **New Game reset broken:** I expected clicking New Game to fully reset the game (score, attempts, history, status), but it only reset attempts and generated a number from 1-100 ignoring the current difficulty. The only way to truly restart was refreshing the page.
 - **Attempt counter off-by-one:** I expected the attempt count to start at 0 before any guess, but it started at 1, effectively costing the player one attempt.
 - **Hints are backwards:** I expected "Too High" to say "Go LOWER" and "Too Low" to say "Go HIGHER," but the messages were swapped — guessing too high said "Go HIGHER," sending the player in the wrong direction.
+- **TypeError crash on even attempts:** I expected the game to work on every guess, but on even-numbered attempts the code converted the secret number to a string, causing a TypeError crash when comparing an int guess to a string secret.
+- **Score off-by-one on win:** I expected winning on attempt 1 to give 90 points, but the formula used `attempt_number + 1`, so it always gave 10 fewer points than expected.
+- **Inconsistent "Too High" scoring:** I expected wrong guesses to consistently lose points, but "Too High" randomly gave +5 on even attempts and -5 on odd attempts, while "Too Low" always gave -5.
+- **Secret doesn't regenerate on difficulty switch:** I expected switching difficulty to generate a new secret within the correct range, but the secret stayed the same (e.g., 98 on Easy mode with range 1-20).
 
 
 ---
