@@ -16,8 +16,9 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 
+#FIX: Changed Easy attempts from 6 to 10 for better gameplay balance
 attempt_limit_map = {
-    "Easy": 6,
+    "Easy": 10,
     "Normal": 8,
     "Hard": 5,
 }
@@ -31,6 +32,19 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+#FIX: Track difficulty so secret regenerates when player switches difficulty
+if "difficulty" not in st.session_state:
+    st.session_state.difficulty = difficulty
+
+if st.session_state.difficulty != difficulty:
+    st.session_state.secret = random.randint(low, high)
+    st.session_state.difficulty = difficulty
+    st.session_state.attempts = 0
+    st.session_state.score = 0
+    st.session_state.status = "playing"
+    st.session_state.history = []
+
+#FIX: Changed attempts to start at 0 instead of 1 to give player full attempt count
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
 
@@ -45,6 +59,7 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
+#FIX: Used f-string with {low} and {high} instead of hardcoded "1 and 100"
 st.info(
     f"Guess a number between {low} and {high}. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
@@ -70,6 +85,7 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+#FIX: New Game now resets all session state fields and uses correct difficulty range
 if new_game:
     st.session_state.attempts = 0
     st.session_state.score = 0
@@ -97,10 +113,8 @@ if submit:
     else:
         st.session_state.history.append(guess_int)
 
-        if st.session_state.attempts % 2 == 0:
-            secret = str(st.session_state.secret)
-        else:
-            secret = st.session_state.secret
+        #FIX: Removed buggy int-to-string conversion that caused TypeError crash on even attempts
+        secret = st.session_state.secret
 
         outcome, message = check_guess(guess_int, secret)
 
