@@ -113,7 +113,7 @@ if submit:
     else:
         st.session_state.history.append(guess_int)
 
-        #FIX: Removed buggy int-to-string conversion that caused TypeError crash on even attempts
+        #FIX: Removed buggy int-to-string conversion that caused TypeError crash on even attemptss
         secret = st.session_state.secret
 
         outcome, message = check_guess(guess_int, secret)
